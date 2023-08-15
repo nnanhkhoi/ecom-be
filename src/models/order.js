@@ -16,7 +16,13 @@ Order.init(
       allowNull: false,
     },
     status: {
-      type: DataTypes.ENUM('pending', 'confirmed', 'in progress', 'delivered'),
+      type: DataTypes.ENUM(
+        'pending',
+        'confirmed',
+        'in progress',
+        'out for delivery',
+        'delivered'
+      ),
       allowNull: false,
       defaultValue: 'pending',
     },
@@ -25,10 +31,13 @@ Order.init(
       allowNull: false,
       references: { model: 'users', key: 'id' },
     },
-    payment_id: {
+    address_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: { model: 'payments', key: 'id' },
+      references: {
+        model: 'address',
+        key: 'id',
+      },
     },
   },
   {

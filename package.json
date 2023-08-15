@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build:ui": "@powershell Remove-Item -Recurse -Force build && cd ../frontend && npm run build && @powershell Copy-Item build -Recurse ../backend",
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
     "migration:down": "node src/utils/rollback.js",

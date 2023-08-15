@@ -1,4 +1,5 @@
 const User = require('./user')
+const Address = require('./address')
 const Product = require('./product')
 const ProductImage = require('./product_image')
 const Category = require('./category')
@@ -15,6 +16,9 @@ const Payment = require('./payment')
 
 User.hasMany(Order)
 Order.belongsTo(User)
+
+User.hasMany(Address)
+Address.belongsTo(User)
 
 Order.hasMany(OrderItem)
 OrderItem.belongsTo(Order)
@@ -57,4 +61,5 @@ module.exports = {
   Cart,
   CartItem,
   Payment,
+  Address,
 }

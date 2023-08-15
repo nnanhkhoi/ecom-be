@@ -1,8 +1,7 @@
 const router = require('express').Router()
 const { Category, Product, ProductImage } = require('../models')
 const { tokenExtractor, isAdmin } = require('../utils/middleware')
-const Sequelize = require('sequelize')
-const { Op } = Sequelize
+
 // Add category
 router.post('/', tokenExtractor, isAdmin, async (req, res) => {
   try {
@@ -49,7 +48,6 @@ router.get('/', async (req, res) => {
 // get product based on category
 router.get('/:category', async (request, response) => {
   const { category } = request.params
-  console.log(category)
 
   const categories = await Category.findAll()
   const filtered = categories.filter(
@@ -57,7 +55,6 @@ router.get('/:category', async (request, response) => {
       c.title.toLowerCase().replace(/'/g, '').replace(/\s/g, '') === category
   )
 
-  console.log(filtered)
   const products = await Product.findAll({
     where: { categoryId: filtered[0].id },
     include: [

@@ -1,4 +1,5 @@
 const path = require('path')
+
 const express = require('express')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
@@ -13,7 +14,7 @@ const logoutRouter = require('./api/logout')
 const sessionRouter = require('./api/session')
 const productRouter = require('./api/product/product')
 const proImageRouter = require('./api/product/productImage')
-
+const addressRouter = require('./api/address')
 const addToCart = require('./api/cart/cart')
 const checkout = require('./api/cart/checkout')
 
@@ -28,7 +29,7 @@ const middleware = require('./utils/middleware')
 
 const corsOptions = {
   credentials: true,
-  origin: ['http://localhost:3000', 'http://localhost:3006'],
+  // origin: ['http://localhost:3000', 'http://localhost:3006'],
 }
 
 app.use(cors(corsOptions))
@@ -40,6 +41,8 @@ app.use(
     },
   })
 )
+app.use(express.static(path.join(__dirname, '..', 'build')))
+
 app.use(bodyParser.json())
 app.use(cookieParser())
 
@@ -60,6 +63,11 @@ app.use('/api/order', orderRouter)
 app.use('/api/checkout', payment)
 app.use('/api/webhook', webhook)
 app.use('/api/category', categories)
+app.use('/api/address', addressRouter)
+
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'build', 'index.html'))
+})
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)

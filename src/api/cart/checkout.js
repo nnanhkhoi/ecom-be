@@ -14,7 +14,7 @@ const {
 
 router.post('/', tokenExtractor, async (req, res) => {
   try {
-    const { payment_id } = req.body
+    const { payment_id, address_id } = req.body
     const userId = req.user.id
 
     // get cart and related cart items
@@ -51,14 +51,18 @@ router.post('/', tokenExtractor, async (req, res) => {
       (acc, item) => acc + item.quantity * item.price,
       0
     )
-    console.log(cart, totalPrice, userId, payment_id)
     // Make sure that the required input values are valid
     if (!totalPrice || !userId || !payment_id) {
       return res.status(400).send('Invalid input')
     }
 
     // Create a new order
-    const order = await Order.create({ totalPrice, userId, payment_id })
+    const order = await Order.create({
+      totalPrice,
+      userId,
+      payment_id,
+      address_id,
+    })
 
     // Copy items from the cart to the order items table
     const orderItems = cart.map((item) => {
@@ -106,13 +110,12 @@ router.post('/', tokenExtractor, async (req, res) => {
         },
       })
     })
-    console.log(line_items)
     const stripeSession = await stripe.checkout.sessions.create({
       line_items,
       mode: 'payment',
       // customer_email: email,
-      success_url: 'http://localhost:3006/checkout?success=1',
-      cancel_url: 'http://localhost:3006/checkout?canceled=1',
+      success_url: 'https://54.165.232.218:3003/checkout?success=1',
+      cancel_url: 'https://54.165.232.218:3003/checkout?canceled=1',
       metadata: { orderId: order.id },
       allow_promotion_codes: true,
     })

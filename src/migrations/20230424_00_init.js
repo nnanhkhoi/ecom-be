@@ -25,10 +25,6 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      address: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
       is_admin: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
@@ -42,111 +38,6 @@ module.exports = {
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: DataTypes.NOW,
-      },
-    })
-
-    await queryInterface.createTable('products', {
-      id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      description: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      price: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false,
-      },
-      categoryId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: { model: 'categories', key: 'id' },
-      },
-      created_at: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW,
-      },
-      updated_at: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW,
-      },
-    })
-
-    await queryInterface.createTable('orders', {
-      id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      total_price: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false,
-      },
-      status: {
-        type: DataTypes.ENUM(
-          'pending',
-          'confirmed',
-          'in progress',
-          'delivered'
-        ),
-        allowNull: false,
-        defaultValue: 'pending',
-      },
-      user_id: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: 'users',
-          key: 'id',
-        },
-      },
-      payment_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: { model: 'payments', key: 'id' },
-      },
-      created_at: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW,
-      },
-      updated_at: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW,
-      },
-    })
-
-    await queryInterface.createTable('order_items', {
-      id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      quantity: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      product_id: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: 'products',
-          key: 'id',
-        },
-      },
-      order_id: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: 'orders',
-          key: 'id',
-        },
       },
     })
 
@@ -180,7 +71,42 @@ module.exports = {
       },
     })
 
-    await queryInterface.createTable('address', {
+    await queryInterface.createTable('products', {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      description: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      price: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+      },
+      category_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: { model: 'categories', key: 'id' },
+      },
+      created_at: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW,
+      },
+      updated_at: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW,
+      },
+    })
+
+    await queryInterface.createTable('addresses', {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -222,6 +148,120 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      created_at: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW,
+      },
+      updated_at: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW,
+      },
+    })
+
+    await queryInterface.createTable('orders', {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      total_price: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+      },
+      status: {
+        type: DataTypes.ENUM(
+          'pending',
+          'confirmed',
+          'in progress',
+          'out for delivery',
+          'delivered'
+        ),
+        allowNull: false,
+        defaultValue: 'pending',
+      },
+      user_id: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'users',
+          key: 'id',
+        },
+      },
+      address_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'addresses',
+          key: 'id',
+        },
+      },
+      created_at: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW,
+      },
+      updated_at: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW,
+      },
+    })
+
+    await queryInterface.createTable('order_items', {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      quantity: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      product_id: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'products',
+          key: 'id',
+        },
+      },
+      order_id: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'orders',
+          key: 'id',
+        },
+      },
+    })
+
+    await queryInterface.createTable('payments', {
+      id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      order_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'orders',
+          key: 'id',
+        },
+      },
+      amount: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+      },
+      status: {
+        type: DataTypes.STRING,
+        defaultValue: 'pending',
+        allowNull: false,
+      },
+      method: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     })
   },
   down: async (queryInterface, DataTypes) => {
@@ -229,7 +269,8 @@ module.exports = {
     await queryInterface.dropTable('orders')
     await queryInterface.dropTable('products')
     await queryInterface.dropTable('users')
-    await queryInterface.dropTable('address')
+    await queryInterface.dropTable('addresses')
     await queryInterface.dropTable('categories')
+    await queryInterface.dropTable('payments')
   },
 }

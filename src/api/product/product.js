@@ -71,7 +71,6 @@ productRouter.get('/:id', async (request, response) => {
 
 productRouter.post('/', tokenExtractor, isAdmin, async (request, response) => {
   const body = request.body
-  console.log(body)
   const newProduct = await Product.create({
     name: body.name,
     description: body.description,
@@ -96,8 +95,7 @@ productRouter.put(
       if (!product) {
         return response.status(404).send('Product not found')
       }
-      console.log(product)
-      console.log(category)
+
       // Update product
       product.name = name
       product.description = description
