@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const { SECRET } = require('./config.js')
+const { SECRET } = require('../configs/config.js')
 const { getCookieValue } = require('./helper.js')
 const Session = require('../models/session.js')
 const User = require('../models/user.js')

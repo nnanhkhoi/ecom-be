@@ -5,8 +5,7 @@ const { Order } = require('../models')
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
-const endpointSecret =
-  'whsec_5ce5e4576e4fb3368d6a95efe02e10b686fd951ff8186c6675c8f7d36ddfa7bb'
+const endpointSecret = process.env.STRIPE_ENDPOINT_SECRET
 
 router.post('/', async (request, response) => {
   const signature = request.headers['stripe-signature']

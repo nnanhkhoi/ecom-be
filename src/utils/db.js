@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 const { Umzug, SequelizeStorage } = require('umzug')
-const { DATABASE_URL } = require('./config')
+const { DATABASE_URL } = require('../configs/config')
 
 const sequelize = new Sequelize(DATABASE_URL)
 
