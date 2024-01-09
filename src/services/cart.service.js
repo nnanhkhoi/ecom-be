@@ -102,9 +102,18 @@ class CartService {
     return 'Item added to cart'
   }
 
-  static async deleteUserCart({ userId, itemId }) {
+  static async deleteUserCart({ userId, productId }) {
+    // Check if the user already has an active cart
+    let cart = await Cart.findOne({
+      where: {
+        userId: userId,
+      },
+    })
+
+    if (!cart) throw new BadRequestError('No active cart available')
+
     // Check if the item exists
-    const cartItem = await CartItem.findOne({ where: { productId: itemId } })
+    const cartItem = await CartItem.findOne({ where: { productId: productId } })
     if (!cartItem) {
       throw new BadRequestError('Item not found in cart')
     }

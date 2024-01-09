@@ -17,6 +17,7 @@ class CartController {
   }
 
   deleteUserCart = async (req, res, next) => {
+    console.log(req.body)
     new SuccessResponse({
       message: 'deleteUserCart Success',
       metadata: await CartService.deleteUserCart(req.body),
